@@ -1,0 +1,10 @@
+- hosts: goku
+  gather_facts: no
+  tasks:
+  - win_domain_controller:
+      dns_domain_name: capsulecorp.local
+      domain_admin_user: goku@capsulecorp.local
+      domain_admin_password: PassW0rd432!
+      safe_mode_password: PassW0rd432!
+      state: domain_controller
+      log_path: c:\capsulecorp_win_domain_controller.txt

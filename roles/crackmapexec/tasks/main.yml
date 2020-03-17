@@ -1,0 +1,34 @@
+---
+# this is necessary because ansible_user becomes unset in become_user clauses
+- set_fact:
+    actual_user: "{{ ansible_user }}" 
+
+- name: Check if CME is already installed
+  stat:
+    path: /home/pentest/.local/bin/cme
+  register: check_cme
+
+- name:
+  shell: >
+    getent passwd {{ actual_user }} | cut -d: -f6
+  changed_when: false
+  register: actual_user_home
+  when: check_cme.stat.exists == False
+
+- name: Ensure pip --user enabled in .bashrc
+  become_user: "{{ actual_user }}"
+  blockinfile:
+    dest: "{{ actual_user_home.stdout }}/.bashrc"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK: pip"
+    block: |
+      [[ -d $HOME/.local/bin ]] && {
+        PATH="$HOME/.local/bin:$PATH"
+      }
+  when: check_cme.stat.exists == False
+
+- name: Pip install CrackMapExec
+  become_user: "{{ actual_user }}"
+  pip:
+    name: crackmapexec
+    extra_args: --user
+  when: check_cme.stat.exists == False
