@@ -1,0 +1,13 @@
+---
+- hosts: goku
+  gather_facts: True
+  vars:
+    dc_address: 172.28.128.100
+    dc_netmask_cidr: 24
+    dc_gateway: 172.28.128.2
+    dc_hostname: goku
+    domain_Name: capsulecorp.local
+    ansible_winrm_transport: plaintext
+    ansible_winrm_scheme: http
+  roles:
+    - role: promotedc
