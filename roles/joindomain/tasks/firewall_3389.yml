@@ -1,0 +1,10 @@
+---
+- name: Open up port 3389 on Windows firewall
+  win_firewall_rule:
+    name: RDP
+    localport: 3389
+    action: allow
+    direction: in
+    protocol: tcp
+    state: present
+    enabled: yes
