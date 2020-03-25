@@ -1,0 +1,10 @@
+---
+- name: Open up port 8080 on Windows firewall
+  win_firewall_rule:
+    name: Tomcat
+    localport: 8080
+    action: allow
+    direction: in
+    protocol: tcp
+    state: present
+    enabled: yes
