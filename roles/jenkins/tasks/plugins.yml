@@ -1,0 +1,19 @@
+---
+# Jenkins doesn't allow updates via CLI, though that is required before plugins
+# can be installed via CLI. See: https://gist.github.com/rowan-m/1026918
+- name: Create Jenkins updates folder.
+  win_file:
+    path: "{{ jenkins_home }}/updates"
+    state: directory
+  register: jenkins_plugins_folder_create
+
+# Install plugins using the CLI. Should write a ps script to make things a bit cleaner...
+# TODO: Need to investigate how to use ssh keys instead of user/password
+- name: Install Jenkins plugins using password.
+  raw: >
+    java -jar {{ jenkins_jar_location }} -s http://{{ jenkins_hostname }}:{{ jenkins_http_port }}{{ jenkins_url_prefix | default('') }}/
+    install-plugin {{ item }}
+    --username {{ jenkins_admin_username }}
+    --password {{ jenkins_admin_password }}
+  with_items: "{{ jenkins_plugins }}"
+  notify: restart jenkins

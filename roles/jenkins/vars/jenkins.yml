@@ -1,0 +1,11 @@
+---
+jenkins_hostname: localhost
+jenkins_home: "C:\\Program Files (x86)\\Jenkins"
+jenkins_http_port_param: --httpPort
+jenkins_http_port: 8080
+jenkins_admin_username: admin
+jenkins_admin_password: admin
+jenkins_java_options: "-Djenkins.install.runSetupWizard=false"
+jenkins_url_prefix: ""
+jenkins_jar_location: "{{ jenkins_home }}\\jenkins-cli.jar"
+jenkins_plugins: []
