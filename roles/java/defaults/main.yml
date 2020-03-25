@@ -1,0 +1,4 @@
+---
+jdk_package: jdk8
+java_major_version: 8.0
+java_minor_version: 242
