@@ -1,0 +1,60 @@
+---
+# If this step fails, logs are in C:\Program Files\Microsoft SQL Server\...\Setup Bootstrap\Log
+# it will often contain the actual error.  If it shows everything passing, the issue is within the DSC logs.
+# 
+# This module also typically throws this error fpr all failure conditions:
+# PowerShell DSC resource MSFT_SqlSetup  failed to execute Set-TargetResource functionality with error message: 
+# System.Exception: Test-TargetResource returned false after calling Set-TargetResource.
+#
+#
+# This document can also be useful to troubleshoot issues with DSC modules
+# https://docs.microsoft.com/en-us/powershell/dsc/troubleshooting 
+#
+# In particular completing these steps:
+# https://docs.microsoft.com/en-us/powershell/dsc/troubleshooting#gathering-events-from-a-single-dsc-operation
+# then re-running a failing PowershellDSC job can help you find the source of your error
+- name: Install SQL Server
+  win_dsc:
+    resource_name: SQLSetup
+    Action: Install
+    UpdateEnabled: True
+    SourcePath: "{{ mssql_installation_path }}\\Media"
+    InstanceName: "{{ mssql_instance_name }}"
+    InstallSharedDir: "{{ mssql_installshared_path }}"
+    InstallSharedwowDir: "{{ mssql_installsharedwow_path }}"
+    InstanceDir: "{{ mssql_instance_path }}"
+    InstallSQLDataDir: "{{ mssql_sqlinstalldata_path }}"
+    SQLUserDBDir: "{{ mssql_sqluserdata_path }}"
+    SQLUserDBLogDir: "{{ mssql_sqluserlog_path }}"
+    SQLTempDBDir: "{{ mssql_sqltempDB_path }}"
+    SQLTempDBLogDir: "{{ mssql_sqltempDBlog_path }}"
+    Features: "{{ mssql_features }}"
+    SQLCollation: "{{ mssql_collation }}"
+    BrowserSvcStartupType: "{{ mssql_browsersvc_mode }}"
+    SuppressReboot: "{{ mssql_suppress_reboot }}"
+    # Service Accounts
+    #
+    # If the type of the DSC resource option is a PSCredential then 
+    # there needs to be 2 options set in the Ansible task definition 
+    # suffixed with _username and _password. So we will be providing 
+    # two options for these normally single option items.
+
+    # SQL Service Account
+    SQLSvcAccount_username: "{{ mssql_sqlsvc_account }}"
+    SQLSvcAccount_password: "{{ mssql_sqlsvc_account_pass }}"
+    # SQL Agent Service Account
+    AgtSvcAccount_username: "{{ mssql_agentsvc_account }}"
+    AgtSvcAccount_password: "{{ mssql_agentsvc_account_pass }}"
+    # SQL Analysis Services Account
+    ASSvcAccount_username: "{{ mssql_assvc_account }}"
+    ASSvcAccount_password: "{{ mssql_assvc_account_pass }}"
+
+    # Used when installing on a network path, comment out 
+    # SourceCredential_username: "{{ ansible_user }}"
+    # SourceCredential_password: "{{ ansible_password }}"
+
+    # System Admins 
+    SQLSysAdminAccounts: "{{ mssql_sysadmin_accounts }}"
+    # Analysis Services Admins (if installed)
+    ASSysAdminAccounts: "{{ mssql_asadmin_accounts }}"
+  tags: install_sql

@@ -1,0 +1,36 @@
+---
+# Setup service accounts
+#
+# We delegate this process to our domain controller since the required AD services are there for
+# win_domain_user to interact with. 
+- name: Active Directory | Ensure SQL Service account is present
+  win_domain_user:
+    name: "{{ mssql_sqlsvc_account | regex_search('[^\\\\]*$') }}"
+    firstname: "{{ mssql_instance_name }}"
+    surname: SQLSvc
+    password: "{{ mssql_sqlsvc_account_pass }}"
+    password_never_expires: yes
+    user_cannot_change_password: yes
+    description: "SQL Service account for {{ inventory_hostname }}\\{{ mssql_instance_name }}"
+    state: present
+    path: "{{ mssql_base_ldap_path }}"
+    groups:
+      - Domain Users
+  tags: service_account
+  delegate_to: "{{ domain_controller }}"
+
+- name: Active Directory | Ensure SQL Agent Service account is present
+  win_domain_user:
+    name: "{{ mssql_agentsvc_account | regex_search('[^\\\\]*$') }}"
+    firstname: "{{ mssql_instance_name }}"
+    surname: AgentSvc
+    password: "{{ mssql_agentsvc_account_pass }}"
+    password_never_expires: yes
+    user_cannot_change_password: yes
+    description: "SQL Agent service account for {{ inventory_hostname }}\\{{ mssql_instance_name }}"
+    state: present
+    path: "{{ mssql_base_ldap_path }}"
+    groups:
+      - Domain Users
+  delegate_to: "{{ domain_controller }}"
+  tags: service_account

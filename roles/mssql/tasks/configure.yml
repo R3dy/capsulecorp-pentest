@@ -1,0 +1,42 @@
+---
+# Begin SQL Server configuration
+- name: Enable TCP Connectivity
+  win_dsc:
+    resource_name: SqlServerNetwork
+    InstanceName: "{{ mssql_instance_name }}"
+    ProtocolName: tcp
+    TcpPort: "{{ mssql_port }}"
+    IsEnabled: True
+    RestartService: True
+  tags: configure_sql
+
+- name: Adjust Max Server Memory to {{ mssql_max_server_memory }}
+  when: mssql_max_server_memory is defined
+  win_dsc:
+    resource_name: SqlServerConfiguration 
+    InstanceName: "{{ mssql_instance_name }}"
+    ServerName: "{{ ansible_hostname }}"
+    OptionName: max server memory (MB)
+    OptionValue: "{{ mssql_max_server_memory }}"
+    RestartService: False
+  tags: configure_sql
+
+- name: Adjust Min Server Memory to {{ mssql_min_server_memory }}
+  when: mssql_min_server_memory is defined
+  win_dsc:
+    resource_name: SqlServerConfiguration 
+    ServerName: "{{ ansible_hostname }}"
+    InstanceName: "{{ mssql_instance_name }}"
+    OptionName: min server memory (MB)
+    OptionValue: "{{ mssql_min_server_memory }}"
+  tags: configure_sql
+
+- name: Adjust Max Degree of Parallelism
+  when: mssql_max_degree_of_parallelism is defined
+  win_dsc:
+    resource_name: SqlServerConfiguration 
+    ServerName: "{{ ansible_hostname }}"
+    InstanceName: "{{ mssql_instance_name }}"
+    OptionName: max degree of parallelism
+    OptionValue: "{{ mssql_max_degree_of_parallelism }}"
+  tags: configure_sql
