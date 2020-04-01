@@ -1,0 +1,42 @@
+---
+- name: Fix XRDP file
+  become: true
+  blockinfile:
+    dest: /etc/xrdp/startwm.sh
+    marker: "# Vagrant fix XRDP"
+    block: |
+      unset DBUS_SESSION_BUS_ADDRESS
+      unset XDG_RUNTIME_DIR
+      . $HOME/.profile
+
+- name: Create the .xsesison file
+  become: "pentest"
+  file:
+    path: /home/pentest/.xsession
+    state: touch
+
+- name: Populate the .xsession file
+  become: "pentest"
+  blockinfile:
+    dest: /home/pentest/.xsession
+    marker: "# Vagrant setup .xsession"
+    block: |
+      #!/bin/sh
+      xfce4-session
+
+- name: Install xorg-video-abi-23
+  become: true
+  apt:
+    name: xorg-video-abi-23
+    state: present
+
+- name: Install xorgxrdp
+  become: true
+  apt:
+    name: xorgxrdp
+    state: present
+
+- name: Restart XRDP
+  become: true
+  shell: |
+    /etc/init.d/xrdp restart
