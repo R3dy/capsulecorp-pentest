@@ -1,0 +1,29 @@
+---    
+- name: Pip install pipenv
+  become_user: "{{ ansible_user }}"
+  pip:
+    name: pipenv
+    extra_args: --user
+
+- name: Add pipenv to path
+  become_user: "{{ ansible_user }}"
+  blockinfile:
+    dest: "/home/pentest/.bashrc"
+    marker: "# Add pipenv to path"
+    block: |
+      export PATH=$PATH:/home/pentest/.local/bin/pipenv
+
+- name: Clone Impacket repo from GitHub
+  become_user: "{{ ansible_user }}"
+  git:
+    repo: https://github.com/SecureAuthCorp/impacket
+    dest: "/home/pentest/impacket"
+
+- name: Install via pipenv
+  become_user: "{{ ansible_user }}"
+  shell: |
+    bash -cl "pipenv install"
+    bash -cl "pipenv run python setup.py install"
+  args:
+    chdir: "/home/pentest/impacket"
+
