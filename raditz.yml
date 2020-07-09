@@ -1,0 +1,12 @@
+---
+- hosts: raditz
+  gather_facts: True
+  vars:
+    ansible_winrm_transport: plaintext
+    ansible_winrm_scheme: http
+    capsulecorp_domain_hostname: "raditz"
+    ethernet_adapter: "Ethernet 2"
+    anpt_flag: "flag3.txt"
+  roles:
+   - role: joindomain
+   - role: placeflag
