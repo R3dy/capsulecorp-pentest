@@ -1,0 +1,81 @@
+---
+  - name: Ensure AD account vegeta exists
+    win_domain_user:
+      name: vegeta
+      firstname: Vegeta
+      password: PasW0rd432#
+      state: present
+      groups:
+        - Domain Users
+
+  - name: Ensure AD account gohan exists
+    win_domain_user:
+      name: gohan
+      firstname: Gohan
+      password: PasW0rd543#
+      state: present
+      groups:
+        - Domain Users
+
+  - name: Ensure AD account trunks exists
+    win_domain_user:
+      name: trunks
+      firstname: Trunks
+      password: PasW0rd654#
+      state: present
+      groups:
+        - Domain Users
+
+  - name: Ensure AD account raditz exists
+    win_domain_user:
+      name: raditz
+      firstname: Raditz
+      password: PasW0rd765#
+      state: present
+      groups:
+        - Domain Users
+
+  - name: Ensure AD account tien exists
+    win_domain_user:
+      name: tien
+      firstname: Tien
+      password: PasW0rd876#
+      state: present
+      groups:
+        - Domain Users
+
+  - name: Ensure AD account GohanADM exists
+    win_domain_user:
+      name: gohan.adm
+      firstname: GohanADM
+      password: PassW0rd876#!
+      state: present
+      groups:
+        - Domain Users
+
+  - name: Ensure AD account Vegetaadm exists
+    win_domain_user:
+      name: vegeta.adm
+      firstname: VegetaADM
+      password: PassW0rd765#!
+      state: present
+      groups:
+        - Domain Users
+
+  - name: Ensure AD account TrunksADM exists
+    win_domain_user:
+      name: trunks.adm
+      firstname: TrunksADM
+      password: PassW0rd654#!
+      state: present
+      groups:
+        - Domain Users
+
+  - name: Ensure AD account serveradmin exists
+    win_domain_user:
+      name: server.admin
+      firstname: ServerAdmin
+      password: P@ssW0rd123#_!
+      state: present
+      groups:
+        - Domain Admins
