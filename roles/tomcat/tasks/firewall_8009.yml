@@ -1,0 +1,10 @@
+---
+- name: Open up port 8009 on Windows firewall
+  win_firewall_rule:
+    name: Tomcat AJP
+    localport: 8009
+    action: allow
+    direction: in
+    protocol: tcp
+    state: present
+    enabled: yes
