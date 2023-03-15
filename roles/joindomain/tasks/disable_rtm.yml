@@ -1,4 +1,0 @@
----
-  - name: Disable Real Time Monitoring
-    win_shell: Set-MpPreference -DisableRealtimeMonitoring $true
-    poll: 0
