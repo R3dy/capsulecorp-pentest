@@ -12,12 +12,6 @@
     win_shell: cscript slmgr.vbs /rearm
     args:
       chdir: C:\Windows\System32\
-  - win_feature:
-      name: "web-server"
-      state: present
-      restart: yes
-      include_sub_features: yes
-      include_management_tools: yes
   roles:
    - role: disable_rtm
    - role: joindomain

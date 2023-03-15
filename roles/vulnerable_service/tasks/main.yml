@@ -12,7 +12,7 @@
   - name: Create a service
     win_shell: New-Service -Name "VulnService" -DisplayName "Vulnerable Service" -Description "This is a vulnerable service."  -BinaryPathName "C:\Program Files\Vulnerable Service\service.exe" -StartupType Auto
         
-  - name: Modify write permissions of a folder
+  - name: Modify write permissions of vulnerable service folder
     ansible.windows.win_acl:
       path: C:\\Program Files\\Vulnerable Service\\
       user: Users

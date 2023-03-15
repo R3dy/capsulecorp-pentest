@@ -15,9 +15,6 @@
 
 - include_tasks: firewall_3389.yml
 
-# Disable Real Time Monitoring
-- include_tasks: disable_rtm.yml
-
 - name: Join the capsulecorp.local domain
   win_domain_membership:
     dns_domain_name: capsulecorp.local
